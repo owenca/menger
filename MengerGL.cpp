@@ -31,9 +31,8 @@
 #include "MengerSponge.h"
 
 
-static const Cube cube;
-static const MengerSponge mengerSponge(cube, 3, false);
-static const MengerSponge invertedSponge(cube, 5, true);
+static const MengerSponge mengerSponge(3, false);
+static const MengerSponge invertedSponge(5, true);
 
 
 static void

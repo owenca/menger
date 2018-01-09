@@ -42,7 +42,7 @@ struct Cube
 class MengerSponge
 {
 public:
-	MengerSponge(const Cube& cube, int level, bool inverted = false);
+	MengerSponge(int level, bool inverted = false);
 
 	int Size() const { return fCubes.size(); }
 	const Cube& CubeAt(int index) const { return fCubes[index]; }

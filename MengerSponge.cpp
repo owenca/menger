@@ -27,7 +27,7 @@
 #include <cstdlib>
 
 
-MengerSponge::MengerSponge(const Cube& cube, int level, bool inverted)
+MengerSponge::MengerSponge(int level, bool inverted)
 {
 	if (inverted)
 		fMaxLevel = 5;
@@ -36,7 +36,7 @@ MengerSponge::MengerSponge(const Cube& cube, int level, bool inverted)
 	else
 		fMaxLevel = 3;
 	
-	ComputeCubes(cube, 0, inverted);
+	ComputeCubes(Cube(), 0, inverted);
 }
 
 
