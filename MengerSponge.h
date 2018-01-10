@@ -32,25 +32,27 @@ using namespace std;
 
 struct Cube
 {
-	float a, x, y, z;
+	float x, y, z;
 
-	Cube(float a = 12, float x = 0, float y = 0, float z = 0)
-		: a(a), x(x), y(y), z(z) { }
+	Cube(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) { }
 };
 
 
 class MengerSponge
 {
 public:
-	MengerSponge(int level, bool inverted = false);
+			MengerSponge(float cubeSize, int level, bool inverted);
 
-	int Size() const { return fCubes.size(); }
-	const Cube& CubeAt(int index) const { return fCubes[index]; }
+	int		Size()					const { return fCubes.size(); }
+	float	CubeSize()				const { return fCubeSize; }
+	const	Cube& CubeAt(int index)	const { return fCubes[index]; }
 
 private:
-	void ComputeCubes(const Cube& cube, int level, bool inverted);
+	void	ComputeCubes(const Cube& cube, float cubeSize, int level,
+				bool inverted);
 
 	int				fMaxLevel;
+	float			fCubeSize;
 	vector<Cube>	fCubes;
 };
 

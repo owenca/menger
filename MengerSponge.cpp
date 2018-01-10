@@ -27,29 +27,25 @@
 #include <cstdlib>
 
 
-MengerSponge::MengerSponge(int level, bool inverted)
+MengerSponge::MengerSponge(float cubeSize, int level, bool inverted)
 {
-	if (inverted)
-		fMaxLevel = 5;
-	else if (level == 4)
-		fMaxLevel = level;
-	else
-		fMaxLevel = 3;
-	
-	ComputeCubes(Cube(), 0, inverted);
+	fMaxLevel = level;
+	ComputeCubes(Cube(), cubeSize, 0, inverted);
 }
 
 
 void
-MengerSponge::ComputeCubes(const Cube& cube, int level, bool inverted)
+MengerSponge::ComputeCubes(const Cube& cube, float a, int level, bool inverted)
 {
 	if (level >= fMaxLevel) {
+		fCubeSize = a;
 		fCubes.push_back(cube);
 		return;
 	}
 
 	vector<Cube> subcubes;
-	const float a = cube.a / 3.0;
+
+	a /= 3;
 
 	for (int i = -1; i < 2; i++)
 		for (int j = -1; j < 2; j++)
@@ -59,10 +55,10 @@ MengerSponge::ComputeCubes(const Cube& cube, int level, bool inverted)
 					test = !test;
 
 				if (test)
-					subcubes.push_back(Cube(a, cube.x + a * i, cube.y + a * j,
+					subcubes.push_back(Cube(cube.x + a * i, cube.y + a * j,
 						cube.z + a * k));
 			}
 
 	for (unsigned index = 0; index < subcubes.size(); index++)
-		ComputeCubes(subcubes[index], level + 1, inverted);
+		ComputeCubes(subcubes[index], a, level + 1, inverted);
 }

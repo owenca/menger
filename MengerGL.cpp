@@ -31,13 +31,15 @@
 #include "MengerSponge.h"
 
 
-static const MengerSponge mengerSponge(3, false);
-static const MengerSponge invertedSponge(5, true);
+static const MengerSponge mengerSponge(12, 3, false);
+static const MengerSponge invertedSponge(12, 4, true);
 
 
 static void
-Rotate(int angle, int order)
+Rotate(int order)
 {
+	static int angle = 0;
+
 	switch (order) {
 		case 0:
 			glRotatef(angle, 1, 0, 0);
@@ -70,57 +72,60 @@ Rotate(int angle, int order)
 			glRotatef(angle, 1, 0, 0);
 			break;
 	}
+
+	angle += 2;
 }
 
 
 static void
-DrawCube(const Cube& cube)
+DrawCube(const Cube& cube, float cubeSize)
 {
-	const float d = cube.a / 2.0;
 	const float x = cube.x;
 	const float y = cube.y;
 	const float z = cube.z;
+	const float d = cubeSize / 2;
 
 	glPushMatrix();
 	glBegin(GL_QUADS);
 
 	// -x-axis
-	glColor3f(1, 1, 1);	// white
+	glColor3f(0, 1, 1);	// cyan
 	glVertex3f(x - d, y + d, z + d);
 	glVertex3f(x - d, y + d, z - d);
 	glVertex3f(x - d, y - d, z - d);
 	glVertex3f(x - d, y - d, z + d);
 
 	// +x-axis
-	glColor3f(0, 1, 0);	// green
+//	glColor3f(1, 1, 1);	// white
+	glColor3f(0, 0, 1);	// blue
 	glVertex3f(x + d, y + d, z + d);
 	glVertex3f(x + d, y + d, z - d);
 	glVertex3f(x + d, y - d, z - d);
 	glVertex3f(x + d, y - d, z + d);
 
 	// -y-axis
-	glColor3f(1, 0, 0);	// red
+	glColor3f(1, 0, 1);	// magenta
 	glVertex3f(x + d, y - d, z + d);
 	glVertex3f(x + d, y - d, z - d);
 	glVertex3f(x - d, y - d, z - d);
 	glVertex3f(x - d, y - d, z + d);
 
 	// +y-axis
-	glColor3f(1, 0, 1);	// magenta
+	glColor3f(1, 0, 0);	// red
 	glVertex3f(x + d, y + d, z + d);
 	glVertex3f(x + d, y + d, z - d);
 	glVertex3f(x - d, y + d, z - d);
 	glVertex3f(x - d, y + d, z + d);
 
 	// -z-axis
-	glColor3f(0, 1, 1);	// cyan
+	glColor3f(1, 1, 0);	// yellow
 	glVertex3f(x + d, y + d, z - d);
 	glVertex3f(x + d, y - d, z - d);
 	glVertex3f(x - d, y - d, z - d);
 	glVertex3f(x - d, y + d, z - d);
 
 	// +z-axis
-	glColor3f(1, 1, 0);	// yellow
+	glColor3f(0, 1, 0);	// green
 	glVertex3f(x + d, y + d, z + d);
 	glVertex3f(x + d, y - d, z + d);
 	glVertex3f(x - d, y - d, z + d);
@@ -147,7 +152,6 @@ Restart()
 void
 Display()
 {
-	static int angle = 0;
 	static int order = 0;
 	static int min = 15;
 	static int max = 55;
@@ -156,6 +160,8 @@ Display()
 	static bool inverted = false;
 	static const MengerSponge* sponge = &mengerSponge;
 
+//d = 15;
+//sponge = &invertedSponge;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -171,11 +177,10 @@ Display()
 			sponge = inverted ? &invertedSponge : &mengerSponge;
 		}
 	}
-	d += delta;
 
-	angle += 5;
-	Rotate(angle, order);
+	d += delta;
+	Rotate(order);
 
 	for (int index = 0; index < sponge->Size(); index++)
-		DrawCube(sponge->CubeAt(index));
+		DrawCube(sponge->CubeAt(index), sponge->CubeSize());
 }
